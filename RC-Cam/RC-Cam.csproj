@@ -285,5 +285,8 @@
     <Reference Include="websocket-sharp">
       <HintPath>$(GameAssemblyPath)\websocket-sharp.dll</HintPath>
     </Reference>
+    <Reference Include="YizziCamModV2">
+      <HintPath>..\..\..\..\..\..\Program Files\Oculus\Software\Software\another-axiom-gorilla-tag\BepInEx\plugins\YizziCamModV2.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

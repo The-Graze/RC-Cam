@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
+using Cinemachine;
 using GorillaTag.Cosmetics;
 using System;
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace RC_Cam
     [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
     public class Plugin : BaseUnityPlugin
     {
-        public static GameObject CamFollow;
+        public static GameObject CamFollow ,ShoulderCam;
         public static RCVehicle CurrentRC;
         static Camera CloneCam;
 
@@ -32,10 +33,17 @@ namespace RC_Cam
                 CloneCam.transform.localRotation = Quaternion.Euler(Vector3.zero);
                 CloneCam.cullingMask = CloneCam.transform.parent.GetComponent<Camera>().cullingMask;
                 CloneCam.enabled = false;
+                FindObjectOfType<CinemachineVirtualCamera>().enabled = true;
+            }
+            if (ShoulderCam == null)
+            {
+                ShoulderCam = YizziCamModV2.CameraController.Instance.CameraTablet.transform.FindChildRecursive("Shoulder Camera").gameObject;
             }
             CamFollow.transform.SetParent(veh.transform, false);
             CamFollow.transform.localPosition = new Vector3(-0.5f, 0, 0);
             CamFollow.transform.localRotation = Quaternion.Euler(5,0,0);
+
+
             if (FirstP.Value)
             {
                 Camera.SetupCurrent(CloneCam);
@@ -45,6 +53,7 @@ namespace RC_Cam
 
         public static void RCStop()
         {
+            FindObjectOfType<CinemachineVirtualCamera>().enabled = false;
             CamFollow.transform.SetParent(GorillaTagger.Instance.mainCamera.transform, false);
             CamFollow.transform.localRotation = Quaternion.Euler(Vector3.zero);
             CamFollow.transform.localPosition = Vector3.zero;
@@ -53,6 +62,10 @@ namespace RC_Cam
                 Camera.SetupCurrent(GorillaTagger.Instance.mainCamera.GetComponent<Camera>());
                 CloneCam.enabled = false;
             }
+
+            ShoulderCam.transform.localPosition = Vector3.zero;
+            ShoulderCam.transform.localRotation = Quaternion.Euler(0, 180, 0);
+ 
         }
     }
 }

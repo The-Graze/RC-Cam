@@ -1,10 +1,8 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
-using Cinemachine;
 using GorillaTag.Cosmetics;
-using System;
 using UnityEngine;
-using Utilla;
+using YizziCamModV2;
 
 namespace RC_Cam
 {
@@ -26,24 +24,19 @@ namespace RC_Cam
             CurrentRC = veh;
             if (CamFollow == null)
             {
-                CamFollow = GorillaTagger.Instance.mainCamera.transform.FindChildRecursive("Camera Follower").gameObject;
+                CamFollow = CameraController.Instance.CameraFollower.gameObject;
+                ShoulderCam = CameraController.Instance.CameraTablet.transform.FindChildRecursive("Shoulder Camera").gameObject;
                 GameObject c = new GameObject("ExtraCam", typeof(Camera));
                 CloneCam = c.GetComponent<Camera>();
-                CloneCam.transform.SetParent(GorillaTagger.Instance.thirdPersonCamera.transform.GetChild(0), false);
+                CloneCam.transform.SetParent(ShoulderCam.transform, false);
                 CloneCam.transform.localRotation = Quaternion.Euler(Vector3.zero);
                 CloneCam.cullingMask = CloneCam.transform.parent.GetComponent<Camera>().cullingMask;
                 CloneCam.enabled = false;
-                FindObjectOfType<CinemachineVirtualCamera>().enabled = true;
-            }
-            if (ShoulderCam == null)
-            {
-                ShoulderCam = YizziCamModV2.CameraController.Instance.CameraTablet.transform.FindChildRecursive("Shoulder Camera").gameObject;
+                CameraController.Instance.CMVirtualCamera.enabled = true;
             }
             CamFollow.transform.SetParent(veh.transform, false);
             CamFollow.transform.localPosition = new Vector3(-0.5f, 0, 0);
             CamFollow.transform.localRotation = Quaternion.Euler(5,0,0);
-
-
             if (FirstP.Value)
             {
                 Camera.SetupCurrent(CloneCam);
@@ -53,7 +46,7 @@ namespace RC_Cam
 
         public static void RCStop()
         {
-            FindObjectOfType<CinemachineVirtualCamera>().enabled = false;
+            CameraController.Instance.CMVirtualCamera.enabled = false;
             CamFollow.transform.SetParent(GorillaTagger.Instance.mainCamera.transform, false);
             CamFollow.transform.localRotation = Quaternion.Euler(Vector3.zero);
             CamFollow.transform.localPosition = Vector3.zero;
@@ -62,10 +55,20 @@ namespace RC_Cam
                 Camera.SetupCurrent(GorillaTagger.Instance.mainCamera.GetComponent<Camera>());
                 CloneCam.enabled = false;
             }
+            ShoulderCam.transform.localPosition = new Vector3(0.022f, 0.087f, 0.09f);
+            ShoulderCam.transform.localRotation = Quaternion.Euler(0, YizziFLip(), 0);
+        }
 
-            ShoulderCam.transform.localPosition = Vector3.zero;
-            ShoulderCam.transform.localRotation = Quaternion.Euler(0, 180, 0);
- 
+        static float YizziFLip()
+        {
+            if (CameraController.Instance.flipped)
+            {
+                return 180;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

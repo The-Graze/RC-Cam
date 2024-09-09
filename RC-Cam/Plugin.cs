@@ -6,13 +6,13 @@ using YizziCamModV2;
 
 namespace RC_Cam
 {
+    [BepInDependency("com.yizzi.gorillatag.yizzicammodv2")]
     [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
     public class Plugin : BaseUnityPlugin
     {
         public static GameObject CamFollow ,ShoulderCam;
         public static RCVehicle CurrentRC;
         static Camera CloneCam;
-
         static ConfigEntry<bool> FirstP;
         Plugin()
         {

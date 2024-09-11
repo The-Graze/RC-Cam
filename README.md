@@ -2,6 +2,8 @@
 
 # Thanks Rose for the suggestion and video to go with this Mod and it's release
 
+https://www.youtube.com/watch?v=GeTeI6kQmEw
+
 Makes your Camera Follow your RC vehicals
 
 config allows for first person (disabled by deafult)

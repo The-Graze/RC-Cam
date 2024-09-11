@@ -32,11 +32,11 @@ namespace RC_Cam
                 CloneCam.transform.localRotation = Quaternion.Euler(Vector3.zero);
                 CloneCam.cullingMask = CloneCam.transform.parent.GetComponent<Camera>().cullingMask;
                 CloneCam.enabled = false;
-                CameraController.Instance.CMVirtualCamera.enabled = true;
             }
             CamFollow.transform.SetParent(veh.transform, false);
             CamFollow.transform.localPosition = new Vector3(-0.5f, 0, 0);
             CamFollow.transform.localRotation = Quaternion.Euler(5,0,0);
+            CameraController.Instance.CMVirtualCamera.enabled = true;
             if (FirstP.Value)
             {
                 Camera.SetupCurrent(CloneCam);
